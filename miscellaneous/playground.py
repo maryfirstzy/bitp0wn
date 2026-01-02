@@ -59,19 +59,19 @@ d_candidates = [
 ]
 assert d in d_candidates
 
-# Express k1 with k2 and k2 with k1
-f1_candidates = [
-    (_k1 * (s1 * r2 * inv(s2 * r1, N)) - _k2) % N
-    for _k1 in [k1, N - k1]
+# Express k1 from k2
+k1_from_k2 = [
+    ((z2 * r1 - z1 * r2) + _k2 * (s2 * r1)) * inv(s1 * r2, N) % N
     for _k2 in [k2, N - k2]
 ]
-assert (z2 * r1 - z1 * r2) * inv(s2 * r1, N) % N in f1_candidates
-f2_candidates = [
-    (_k2 * (s2 * r1 * inv(s1 * r2, N)) - _k1) % N
+assert k1 in k1_from_k2 or N - k1 in k1_from_k2
+
+# Express k2 from k1
+k2_from_k1 = [
+    (_k1 * (s1 * r2) - (z2 * r1 - z1 * r2)) * inv(s2 * r1, N) % N
     for _k1 in [k1, N - k1]
-    for _k2 in [k2, N - k2]
 ]
-assert (r2 * z1 - r1 * z2) * inv(s1 * r2, N) % N in f2_candidates
+assert k2 in k2_from_k1 or N - k2 in k2_from_k1
 
 # Express k1 & k2 with d
 _a = r1 * inv(s1, N) % N
