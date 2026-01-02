@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import bitcoin
 
@@ -20,13 +20,15 @@ b_pk = bitcoin.privtopub(b_sk)
 #################################   Signature   ################################
 ################################################################################
 
+
 def ecdsa_raw_sign_one_to_one(msghash, sender_priv, receiver_pub):
     z = bitcoin.hash_to_int(msghash)
     k = bitcoin.deterministic_generate_k(msghash, sender_priv)
     r, y = bitcoin.fast_multiply(bitcoin.decode_pubkey(receiver_pub), k)
-    s = bitcoin.inv(k, N) * (z + r*bitcoin.decode_privkey(sender_priv)) % N
-    v, r, s = 27+((y % 2) ^ (0 if s * 2 < N else 1)), r, s if s * 2 < N else N - s
+    s = bitcoin.inv(k, N) * (z + r * bitcoin.decode_privkey(sender_priv)) % N
+    v, r, s = 27 + ((y % 2) ^ (0 if s * 2 < N else 1)), r, s if s * 2 < N else N - s
     return v, r, s
+
 
 # Bob write a message
 msg = "Hello Alice"
@@ -39,17 +41,21 @@ signature_for_alice = ecdsa_raw_sign_one_to_one(msg_hash, b_sk, a_pk)
 ###############################   Verification   ###############################
 ################################################################################
 
+
 def ecdsa_raw_verify_one_to_one(msghash, vrs, sender_pub, receiver_priv):
     v, r, s = vrs
     w = bitcoin.inv(s, N)
     z = bitcoin.hash_to_int(msghash)
-    u1, u2 = z*w % N, r*w % N
+    u1, u2 = z * w % N, r * w % N
     receiver_pub = bitcoin.decode_pubkey(bitcoin.privtopub(receiver_priv))
-    receiver_sender_shared = bitcoin.fast_multiply(bitcoin.decode_pubkey(sender_pub), bitcoin.decode_privkey(receiver_priv))
+    receiver_sender_shared = bitcoin.fast_multiply(
+        bitcoin.decode_pubkey(sender_pub), bitcoin.decode_privkey(receiver_priv)
+    )
     u1Qr = bitcoin.fast_multiply(receiver_pub, u1)
     u2Qs = bitcoin.fast_multiply(receiver_sender_shared, u2)
     x, y = bitcoin.fast_add(u1Qr, u2Qs)
     return bool(r == x and (r % N) and (s % N))
+
 
 # Alice verify the signature provided by Bob works with her own private key
 assert ecdsa_raw_verify_one_to_one(msg_hash, signature_for_alice, b_pk, a_sk)

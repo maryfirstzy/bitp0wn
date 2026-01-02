@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from bitcoin import change_curve, fast_add, fast_multiply, inv
 import random
@@ -6,8 +6,8 @@ import random
 # define a 16-bits curve (not secure)
 P = 10177
 A = 1
-B = P-1
-G = (1,1)
+B = P - 1
+G = (1, 1)
 N = 10331
 change_curve(P, N, A, B, G[0], G[1])
 
@@ -15,6 +15,7 @@ change_curve(P, N, A, B, G[0], G[1])
 k = random.randint(1, N)
 Q = fast_multiply(G, k)
 print("SEARCH - {0}".format(k))
+
 
 # Pollard rho
 def new_xab(x, a, b):
@@ -31,7 +32,10 @@ def new_xab(x, a, b):
         x = fast_add(x, Q)
     return x, a, b
 
-x=X=(0,0); a=A=0; b=B=0;
+
+x = X = (0, 0)
+a = A = 0
+b = B = 0
 for i in range(N):
     x, a, b = new_xab(x, a, b)
     X, A, B = new_xab(X, A, B)

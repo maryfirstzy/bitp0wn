@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from bitcoin import fast_add, fast_multiply, G, inv, N
 from random import SystemRandom
@@ -19,6 +19,6 @@ m = a * r * inv(b, N)
 
 # et voila
 w = inv(s, N)
-u1, u2 = m*w % N, r*w % N
+u1, u2 = m * w % N, r * w % N
 x, y = fast_add(fast_multiply(G, u1), fast_multiply(Q, u2))
-assert(r == x and (r % N) and (s % N))
+assert r == x and (r % N) and (s % N)
