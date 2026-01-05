@@ -42,7 +42,7 @@ sk = bitcoin.random_key()
 pk = bitcoin.privtopub(sk)
 print("+ Priv key = {:s}".format(sk))
 
-# Sign 2 messages
+# Sign 3 messages
 d = bitcoin.decode_privkey(sk)
 z1 = get_z("my_message_1")
 k1 = random.SystemRandom().randrange(1, N)
@@ -50,14 +50,9 @@ v1, r1, s1 = sign(z1, k1, sk)
 z2 = get_z("my_message_2")
 k2 = random.SystemRandom().randrange(1, N)
 v2, r2, s2 = sign(z2, k2, sk)
-
-# Express d
-d_candidates = [
-    (z1 * s2 * _k2 - z2 * s1 * _k1) * inv(r1 * z2 - r2 * z1, N) % N
-    for _k1 in [k1, N - k1]
-    for _k2 in [k2, N - k2]
-]
-assert d in d_candidates
+z3 = get_z("my_message_3")
+k3 = random.SystemRandom().randrange(1, N)
+v3, r3, s3 = sign(z3, k3, sk)
 
 # Express k1 from k2
 k1_from_k2 = [
@@ -66,17 +61,27 @@ k1_from_k2 = [
 ]
 assert k1 in k1_from_k2 or N - k1 in k1_from_k2
 
-# Express k2 from k1
-k2_from_k1 = [
-    (_k1 * (s1 * r2) - (z2 * r1 - z1 * r2)) * inv(s2 * r1, N) % N
-    for _k1 in [k1, N - k1]
+# Express k1 from k3
+k1_from_k3 = [
+    ((z3 * r1 - z1 * r3) + _k3 * (s3 * r1)) * inv(s1 * r3, N) % N
+    for _k3 in [k3, N - k3]
 ]
-assert k2 in k2_from_k1 or N - k2 in k2_from_k1
+assert k1 in k1_from_k3 or N - k1 in k1_from_k3
 
-# Express k1 & k2 with d
+# Express k2 from k3
+k2_from_k3 = [
+    ((z3 * r2 - z2 * r3) + _k3 * (s3 * r2)) * inv(s2 * r3, N) % N
+    for _k3 in [k3, N - k3]
+]
+assert k2 in k2_from_k3 or N - k2 in k2_from_k3
+
+# Express k1, k2 & k3 with d
 _a = r1 * inv(s1, N) % N
 _b = z1 * inv(s1, N) % N
 assert (d * _a + _b) % N == k1 or (d * _a + _b) % N == N - k1
 _c = r2 * inv(s2, N) % N
 _d = z2 * inv(s2, N) % N
 assert (d * _c + _d) % N == k2 or (d * _c + _d) % N == N - k2
+_e = r3 * inv(s3, N) % N
+_f = z3 * inv(s3, N) % N
+assert (d * _e + _f) % N == k3 or (d * _e + _f) % N == N - k3
