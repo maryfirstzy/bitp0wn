@@ -12,7 +12,8 @@ q = fast_multiply(G, k)[0]
 print("SEARCH - {0}".format(k))
 
 for n in range(2**nbits - 2 ** (nbits // 2)):
- candidate = fast_multiply(G, n)
-    if candidate[0] == q:
-        print("FOUND  - {0}".format(n))
-        break
+    # Ensure this block uses consistent spaces/tabs
+    candidate = some_function(n)  # (Example line 15)
+    if candidate[0] == q:         # Line 16 must align with line 15
+        pass
+
