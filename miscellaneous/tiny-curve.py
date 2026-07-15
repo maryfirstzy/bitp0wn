@@ -71,7 +71,11 @@ def jacobian_multiply(a, n, P):
 def fast_add(a, b, P):
     return from_jacobian(jacobian_add(to_jacobian(a), to_jacobian(b), P), P)
 
-def fast_substract((x1, y1), (x2, y2), P):
+def fast_substract(P1, P2, P):
+    x1, y1 = P1
+    x2, y2 = P2
+    # Your remaining subtraction logic goes here...
+
     return fast_add((x1, y1), (x2, -y2), P)
 
 def fast_multiply(a, n, P):
