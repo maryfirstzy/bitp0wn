@@ -32,7 +32,7 @@ for x in range(2 ** (nbits // 2)):
 # find y where y E X and y = G + (x * 2^(nbits/2))
 O = (0, 0)
 O_ADDER = fast_multiply(G, 2 ** (nbits / 2))
-for factor_giant in range(2 ** (nbits / 2)):
+for factor_giant in range(2 ** (nbits // 2)):
     substract_res = fast_substract(Q, O)
     if substract_res in baby_steps:
         factor_baby = baby_steps[substract_res]
