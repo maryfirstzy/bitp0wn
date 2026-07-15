@@ -21,8 +21,8 @@ print("SEARCH - {0}".format(k))
 # for x E N and x < 2^(nbits/2) , f(x) => G * x
 O = (0, 0)
 baby_steps = {}
-for x in range(2 ** (nbits / 2)):
-    baby_steps[O] = x
+for x in range(2 ** (nbits // 2)):
+     baby_steps[O] = x
     O = fast_add(O, G)
 
 # find y where y E X and y = G + (x * 2^(nbits/2))
