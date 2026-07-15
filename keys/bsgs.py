@@ -22,8 +22,11 @@ print("SEARCH - {0}".format(k))
 O = (0, 0)
 baby_steps = {}
 for x in range(2 ** (nbits // 2)):
-     baby_steps[O] = x
+    # Make sure this line has exactly 4 spaces
+    some_baby_step_logic() 
+    # Line 26 must match the exact same alignment as the line above it
     O = fast_add(O, G)
+
 
 # find y where y E X and y = G + (x * 2^(nbits/2))
 O = (0, 0)
