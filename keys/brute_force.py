@@ -7,7 +7,7 @@ import random
 nbits = 16
 
 # generate private and public key
-k = random.randint(0, 2**nbits - 2 ** (nbits / 2))
+k = random.randint(0, 2**nbits - 2 ** (nbits // 2))
 q = fast_multiply(G, k)[0]
 print("SEARCH - {0}".format(k))
 
