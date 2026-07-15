@@ -16,7 +16,8 @@ for n in range(2**nbits - 2 ** (nbits // 2)):
     candidate = k + n  # (Replace this with your actual math logic)
     
     # 2. Now you can safely check it:
-    if candidate[0] == q:  
+    if candidate == q:
+         
         pass
 
 
