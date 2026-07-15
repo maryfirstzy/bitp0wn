@@ -22,8 +22,9 @@ print("SEARCH - {0}".format(k))
 O = (0, 0)
 baby_steps = {}
 for x in range(2 ** (nbits // 2)):
-    # Make sure this line has exactly 4 spaces
-    some_baby_step_logic() 
+    # DELETE the "some_baby_step_logic()" line entirely
+    O = fast_add(O, G)  # This is your actual code line 26
+
     # Line 26 must match the exact same alignment as the line above it
     O = fast_add(O, G)
 
